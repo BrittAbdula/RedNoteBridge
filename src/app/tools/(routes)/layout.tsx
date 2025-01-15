@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react'
+import Link from 'next/link'
 
 export default function ToolsLayout({
   children,
@@ -43,20 +44,20 @@ export default function ToolsLayout({
                 Related Guides
               </h2>
               <div className="space-y-4">
-                <a 
+                <Link 
                   href="/blog/content-creation-masterclass" 
                   className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <h3 className="font-medium mb-1">Content Creation Masterclass</h3>
                   <p className="text-sm">Learn how to create engaging content that resonates with Chinese audiences.</p>
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="/blog/RedNote-registration-guide" 
                   className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <h3 className="font-medium mb-1">RedNote Registration Guide</h3>
                   <p className="text-sm">Step-by-step guide to setting up your RedNote account.</p>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

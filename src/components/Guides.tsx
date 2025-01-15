@@ -9,10 +9,10 @@ const guides = [
     slug: 'RedNote-registration-guide'
   },
   {
-    title: 'Content Creation Masterclass',
-    description: 'Learn how to create engaging content that resonates with Chinese audiences while maintaining your authentic voice.',
-    image: '/images/content-creation.svg',
-    slug: 'content-creation-masterclass'
+    title: 'RedNoteBridge Tools Guide',
+    description: 'Learn how to effectively use our AI-powered tools to enhance your RedNote presence and connect with Chinese audiences.',
+    image: '/images/tools-guide.svg',
+    slug: 'tools-guide'
   }
 ]
 

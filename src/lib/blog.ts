@@ -1,44 +1,27 @@
-import fs from 'fs/promises'
+import fs from 'fs'
 import path from 'path'
-import { serialize } from 'next-mdx-remote/serialize'
+import matter from 'gray-matter'
 
-export interface BlogPost {
-  slug: string
-  title: string
-  description: string
-  image: string
-  date: string
-  readTime: string
-  content: any // MDX content
-}
-
-const POSTS_DIR = path.join(process.cwd(), 'content/blog')
-
-export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+export async function getBlogPost(slug: string) {
   try {
-    const filePath = path.join(POSTS_DIR, `${slug}.mdx`)
-    const fileContent = await fs.readFile(filePath, 'utf8')
+    // 读取 MDX 文件
+    const filePath = path.join(process.cwd(), 'content/blog', `${slug}.mdx`)
+    const source = fs.readFileSync(filePath, 'utf8')
     
-    // Parse frontmatter and serialize MDX content
-    const { frontmatter, content } = await parseMDX(fileContent)
+    // 解析 frontmatter 和内容
+    const { data, content } = matter(source)
     
     return {
       slug,
-      ...frontmatter,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      date: data.date,
+      readTime: data.readTime,
       content
     }
   } catch (error) {
+    console.error('Error fetching blog post:', error)
     return null
-  }
-}
-
-async function parseMDX(source: string) {
-  const mdxSource = await serialize(source, {
-    parseFrontmatter: true
-  })
-  
-  return {
-    frontmatter: mdxSource.frontmatter as Omit<BlogPost, 'slug' | 'content'>,
-    content: mdxSource
   }
 } 

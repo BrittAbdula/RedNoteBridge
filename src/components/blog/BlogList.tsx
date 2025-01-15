@@ -8,15 +8,15 @@ const posts = [
     description: 'Step-by-step tutorial on how to create and verify your RedNote account, including tips for profile optimization.',
     image: '/images/registration-guide.svg',
     date: '2025-01-11',
-    readTime: '10 min read'
+    readTime: '4 min read'
   },
   {
-    slug: 'content-creation-masterclass',
-    title: 'Content Creation Masterclass',
-    description: 'Learn how to create engaging content that resonates with Chinese audiences while maintaining your authentic voice.',
-    image: '/images/content-creation.svg',
-    date: '2025-01-18',
-    readTime: '15 min read'
+    title: 'RedNoteBridge Tools Guide',
+    description: 'Learn how to effectively use our AI-powered tools to enhance your RedNote presence and connect with Chinese audiences.',
+    image: '/images/tools-guide.svg',
+    slug: 'tools-guide',
+    date: '2025-01-11',
+    readTime: '3 min read'
   }
 ]
 

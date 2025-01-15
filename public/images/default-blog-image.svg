@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="#F8F9FA"/>
+  
+  <!-- 装饰图案 -->
+  <path d="M0 0 L1200 0 L1200 30 Q600 60 0 30 Z" fill="#FE2C55" opacity="0.1"/>
+  <path d="M0 630 L1200 630 L1200 600 Q600 570 0 600 Z" fill="#FE2C55" opacity="0.1"/>
+  
+  <!-- 中心内容区域 -->
+  <rect x="300" y="165" width="600" height="300" rx="20" fill="white" stroke="#E5E7EB" stroke-width="2"/>
+  
+  <!-- Logo文字 -->
+  <text x="600" y="280" text-anchor="middle" font-family="system-ui, -apple-system" font-size="36" font-weight="bold" fill="#111827">
+    RedNoteBridge
+  </text>
+  
+  <!-- 副标题 -->
+  <text x="600" y="330" text-anchor="middle" font-family="system-ui, -apple-system" font-size="24" fill="#6B7280">
+    Your Cultural Bridge to China's Social Media
+  </text>
+  
+  <!-- 装饰图标 -->
+  <g transform="translate(530, 360)">
+    <circle cx="0" cy="0" r="8" fill="#FE2C55"/>
+    <circle cx="70" cy="0" r="8" fill="#FE2C55"/>
+    <circle cx="140" cy="0" r="8" fill="#FE2C55"/>
+  </g>
+</svg> 

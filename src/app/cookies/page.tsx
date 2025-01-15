@@ -40,9 +40,9 @@ export default function CookiesPage() {
         <section className="mb-8">
           <h2>Third-Party Services</h2>
           <p>
-            While our website doesn't use cookies, please note that external services 
-            we use (like OpenAI's API) might have their own policies. However, these 
-            services only process immediate requests and don't track user behavior on 
+            While our website doesn&apos;t use cookies, please note that external services 
+            we use (like OpenAI&apos;s API) might have their own policies. However, these 
+            services only process immediate requests and don&apos;t track user behavior on 
             our site.
           </p>
         </section>

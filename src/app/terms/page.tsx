@@ -5,7 +5,7 @@ export default function TermsPage() {
       
       <div className="prose max-w-none">
         <p className="lead text-xl mb-8">
-          By using RedNoteBridge's tools and services, you agree to these terms. 
+          By using RedNoteBridge&apos;s tools and services, you agree to these terms. 
           Please read them carefully.
         </p>
 
@@ -13,7 +13,7 @@ export default function TermsPage() {
           <h2>1. Service Description</h2>
           <p>
             RedNoteBridge provides AI-powered tools for translating and adapting content 
-            for Chinese social media. Our services are provided "as is" without any 
+            for Chinese social media. Our services are provided &quot;as is&quot; without any 
             warranties or guarantees.
           </p>
         </section>
@@ -47,7 +47,7 @@ export default function TermsPage() {
             <li>Illegal or promotes illegal activities</li>
             <li>Harassing, hateful, or discriminatory</li>
             <li>Deliberately false or misleading</li>
-            <li>Violating others' intellectual property rights</li>
+            <li>Violating others&apos; intellectual property rights</li>
           </ul>
         </section>
 

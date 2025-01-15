@@ -71,4 +71,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     },
   ]
-} 
+}

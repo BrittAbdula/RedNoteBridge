@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { translateName } from '@/lib/api-client'
 import { TranslatedName, NameTranslatorRequest } from '@/types/name-translator'
 import { Copy, Check } from 'lucide-react'
-import { Slogan } from '@/components/Slogan'
 
 const styleOptions = ['Modern', 'Traditional', 'Creative']
 
@@ -53,8 +52,7 @@ export default function NameTranslatorPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">Chinese Name Translator</h1>
-      <Slogan type="name-translator" />
+      <h1 className="text-3xl font-bold mb-8">Chinese Name Translator</h1>
       
       <form onSubmit={handleSubmit} className="space-y-6 mb-8">
         {/* Name Input */}

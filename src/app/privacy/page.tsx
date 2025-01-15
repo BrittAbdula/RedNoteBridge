@@ -31,7 +31,7 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2>Third-Party Services</h2>
           <p>
-            We use OpenAI's API to power our translation and generation tools. Your inputs are 
+            We use OpenAI&apos;s API to power our translation and generation tools. Your inputs are 
             only used to generate immediate results and are not stored or used for any other 
             purpose.
           </p>
