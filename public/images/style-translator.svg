@@ -1,0 +1,26 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="#FFF1F3"/>
+  
+  <!-- 主要内容框 -->
+  <rect x="100" y="50" width="200" height="200" rx="20" 
+        fill="white" stroke="#FE2C55" stroke-width="4"/>
+  
+  <!-- 风格元素 -->
+  <rect x="120" y="80" width="160" height="20" rx="4" fill="#FFE4E8"/>
+  <rect x="120" y="110" width="100" height="10" rx="2" fill="#FFCCD4"/>
+  
+  <!-- 装饰性标签 -->
+  <rect x="120" y="140" width="60" height="24" rx="12" fill="#FE2C55"/>
+  <rect x="190" y="140" width="40" height="24" rx="12" fill="#FF8599"/>
+  
+  <!-- 图片占位符 -->
+  <rect x="120" y="180" width="50" height="50" rx="8" fill="#FFE4E8"/>
+  <rect x="180" y="180" width="50" height="50" rx="8" fill="#FFE4E8"/>
+  
+  <!-- 装饰性元素 -->
+  <circle cx="50" cy="150" r="10" fill="#FF8599" opacity="0.5"/>
+  <circle cx="350" cy="150" r="10" fill="#FF8599" opacity="0.5"/>
+  <path d="M50 100 Q200 20 350 100" 
+        stroke="#FFCCD4" stroke-width="2" stroke-dasharray="4,4"/>
+</svg>

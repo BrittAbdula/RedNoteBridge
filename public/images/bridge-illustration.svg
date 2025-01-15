@@ -1,0 +1,26 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="600" height="400" fill="#FFF1F3"/>
+  
+  <!-- 桥的主体结构 -->
+  <path d="M50 250 C150 250, 150 150, 300 150 C450 150, 450 250, 550 250" 
+        stroke="#FE2C55" stroke-width="8" fill="none"/>
+  
+  <!-- 桥的支柱 -->
+  <line x1="150" y1="150" x2="150" y2="350" stroke="#2C2C2C" stroke-width="8"/>
+  <line x1="450" y1="150" x2="450" y2="350" stroke="#2C2C2C" stroke-width="8"/>
+  
+  <!-- 装饰性的中国元素 -->
+  <circle cx="300" cy="140" r="20" fill="#FE2C55"/>
+  <path d="M290 140 L310 140 M300 130 L300 150" 
+        stroke="white" stroke-width="3"/>
+  
+  <!-- 连接线 -->
+  <path d="M100 250 L200 250" stroke="#FF8599" stroke-width="2" stroke-dasharray="5,5"/>
+  <path d="M400 250 L500 250" stroke="#FF8599" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- 装饰性图案 -->
+  <circle cx="100" cy="100" r="5" fill="#FF8599"/>
+  <circle cx="500" cy="100" r="5" fill="#FF8599"/>
+  <circle cx="300" cy="50" r="5" fill="#FF8599"/>
+</svg>

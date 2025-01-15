@@ -1,0 +1,22 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="#FFF1F3"/>
+  
+  <!-- 手机框架 -->
+  <rect x="120" y="50" width="160" height="200" rx="20" 
+        stroke="#2C2C2C" stroke-width="8" fill="white"/>
+  
+  <!-- 屏幕内容 -->
+  <rect x="140" y="80" width="120" height="20" rx="4" fill="#FFCCD4"/>
+  <rect x="140" y="110" width="80" height="10" rx="2" fill="#FFE4E8"/>
+  <rect x="140" y="130" width="100" height="10" rx="2" fill="#FFE4E8"/>
+  
+  <!-- 装饰性图标 -->
+  <circle cx="160" cy="170" r="10" fill="#FE2C55"/>
+  <circle cx="190" cy="170" r="10" fill="#FF8599"/>
+  <circle cx="220" cy="170" r="10" fill="#FE2C55"/>
+  
+  <!-- 光效 -->
+  <circle cx="300" cy="80" r="20" fill="#FFE4E8" opacity="0.5"/>
+  <circle cx="100" cy="200" r="15" fill="#FFE4E8" opacity="0.5"/>
+</svg>

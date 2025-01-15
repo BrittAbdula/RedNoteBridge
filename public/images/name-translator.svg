@@ -1,0 +1,27 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="#FFF1F3"/>
+  
+  <!-- 中文字符背景圆 -->
+  <circle cx="200" cy="150" r="80" fill="white" stroke="#FE2C55" stroke-width="4"/>
+  
+  <!-- 装饰性汉字 -->
+  <text x="170" y="140" font-family="Noto Sans SC" font-size="24" fill="#FE2C55">红</text>
+  <text x="200" y="170" font-family="Noto Sans SC" font-size="24" fill="#FE2C55">书</text>
+  
+  <!-- 魔法星星效果 -->
+  <path d="M300 100 L310 110 L300 120 L290 110 Z" fill="#FF8599"/>
+  <path d="M100 200 L110 210 L100 220 L90 210 Z" fill="#FF8599"/>
+  <path d="M250 50 L260 60 L250 70 L240 60 Z" fill="#FF8599"/>
+  
+  <!-- 连接线 -->
+  <path d="M120 150 C150 100, 250 100, 280 150" 
+        stroke="#FFCCD4" stroke-width="2" stroke-dasharray="4,4"/>
+  <path d="M120 170 C150 220, 250 220, 280 170" 
+        stroke="#FFCCD4" stroke-width="2" stroke-dasharray="4,4"/>
+  
+  <!-- AI 生成指示器 -->
+  <circle cx="350" cy="150" r="20" fill="#FE2C55"/>
+  <text x="350" y="155" text-anchor="middle" font-family="Inter" 
+        font-size="12" fill="white">AI</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="#FFF1F3"/>
+  
+  <!-- 表单框架 -->
+  <rect x="100" y="50" width="200" height="200" rx="10" 
+        fill="white" stroke="#2C2C2C" stroke-width="4"/>
+  
+  <!-- 表单元素 -->
+  <rect x="120" y="80" width="160" height="30" rx="4" 
+        fill="#FFE4E8"/>
+  <rect x="120" y="120" width="160" height="30" rx="4" 
+        fill="#FFE4E8"/>
+  
+  <!-- 提交按钮 -->
+  <rect x="120" y="180" width="160" height="40" rx="20" 
+        fill="#FE2C55"/>
+  <text x="180" y="205" text-anchor="middle" 
+        fill="white" font-family="Inter" font-size="14">
+    Sign Up
+  </text>
+  
+  <!-- 装饰元素 -->
+  <circle cx="50" cy="150" r="10" fill="#FF8599"/>
+  <circle cx="350" cy="150" r="10" fill="#FF8599"/>
+  <path d="M50 100 Q200 0 350 100" 
+        stroke="#FFCCD4" stroke-width="2" fill="none"/>
+</svg>
