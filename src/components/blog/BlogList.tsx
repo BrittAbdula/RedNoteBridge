@@ -7,7 +7,7 @@ const posts = [
     title: 'Complete RedNote Registration Guide',
     description: 'Step-by-step tutorial on how to create and verify your RedNote account, including tips for profile optimization.',
     image: '/images/rednote-registration.png',
-    date: '2025-01-11',
+    date: '2025-01-10',
     readTime: '4 min read'
   },
   {
