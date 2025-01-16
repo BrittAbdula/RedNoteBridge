@@ -6,7 +6,7 @@ const guides = [
     title: 'Complete RedNote Registration Guide',
     description: 'Step-by-step tutorial on how to create and verify your RedNote account, including tips for profile optimization.',
     image: '/images/registration-guide.svg',
-    slug: 'RedNote-registration-guide'
+    slug: 'rednote-registration-guide'
   },
   {
     title: 'RedNoteBridge Tools Guide',

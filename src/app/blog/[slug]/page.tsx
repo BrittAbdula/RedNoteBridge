@@ -52,7 +52,7 @@ export default async function Page({
 // 预生成静态路径
 export function generateStaticParams() {
   return [
-    { slug: 'RedNote-registration-guide' },
+    { slug: 'rednote-registration-guide' },
     // { slug: 'content-creation-masterclass' },
     { slug: 'tools-guide' }
   ]

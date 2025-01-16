@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/blog/RedNote-registration-guide`,
+      url: `${baseUrl}/blog/rednote-registration-guide`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,

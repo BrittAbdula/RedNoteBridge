@@ -75,7 +75,7 @@ export default function ToolsLayout({
                   <p className="text-sm">Learn how to create engaging content that resonates with Chinese audiences.</p>
                 </Link>
                 <Link 
-                  href="/blog/RedNote-registration-guide" 
+                  href="/blog/rednote-registration-guide" 
                   className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <h3 className="font-medium mb-1">RedNote Registration Guide</h3>

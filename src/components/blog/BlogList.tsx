@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const posts = [
   {
-    slug: 'RedNote-registration-guide',
+    slug: 'rednote-registration-guide',
     title: 'Complete RedNote Registration Guide',
     description: 'Step-by-step tutorial on how to create and verify your RedNote account, including tips for profile optimization.',
     image: '/images/rednote-registration.png',
