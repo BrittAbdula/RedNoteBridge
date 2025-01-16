@@ -1,181 +1,214 @@
 'use client'
+
 import { useState } from 'react'
-import { Loader2, Sparkles } from 'lucide-react'
+import { translateStyle } from '@/lib/api-client'
+import { StyleTranslatorRequest, TranslatedStyle } from '@/types/style-translator'
+import { Copy, Check } from 'lucide-react'
+import { Slogan } from '@/components/Slogan'
 
-interface StyleResult {
-  content: string
-  title: string
-  tags: string[]
-  tips: string
-}
+const styleOptions = ['Lifestyle', 'Food', 'Travel', 'Beauty', 'Fashion', 'Tech']
+const toneOptions = ['Casual', 'Professional', 'Trendy', 'Emotional']
 
-export default function StyleTranslator() {
-  const [content, setContent] = useState('')
-  const [tone, setTone] = useState('casual')
-  const [category, setCategory] = useState('lifestyle')
+export function StyleTranslator() {
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<StyleResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [translation, setTranslation] = useState<TranslatedStyle | null>(null)
+  const [copied, setCopied] = useState(false)
+  const [formData, setFormData] = useState<StyleTranslatorRequest>({
+    content: '',
+    style: 'lifestyle',
+    tone: 'casual'
+  })
 
-  const categories = [
-    { id: 'lifestyle', label: 'Lifestyle' },
-    { id: 'food', label: 'Food & Dining' },
-    { id: 'travel', label: 'Travel' },
-    { id: 'beauty', label: 'Beauty' },
-    { id: 'fashion', label: 'Fashion' },
-    { id: 'tech', label: 'Technology' },
-  ]
-
-  const tones = [
-    { id: 'casual', label: 'Casual & Relaxed' },
-    { id: 'professional', label: 'Professional & Informative' },
-    { id: 'trendy', label: 'Trendy & Modern' },
-    { id: 'emotional', label: 'Emotional & Healing' },
-  ]
-
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!formData.content.trim()) {
+      setError('Please enter content to translate')
+      return
+    }
+
     setIsLoading(true)
+    setError(null)
 
     try {
-      const response = await fetch('/api/style-translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, tone, category }),
-      })
-
-      const data = await response.json()
-      setResult(data)
-    } catch (error) {
-      console.error('Error translating style:', error)
+      const response = await translateStyle(formData)
+      setTranslation(response.translation)
+    } catch (err) {
+      console.error('Error translating style:', err)
+      setError('Failed to translate style. Please try again.')
     } finally {
       setIsLoading(false)
     }
   }
 
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <div className="space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900">RedBook Style Transformer</h1>
-          <p className="text-lg text-gray-600">
-            Transform your content into engaging RedBook-style posts
-          </p>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-2">RedNote Style Translator</h1>
+      <Slogan type="style-translator" />
+      
+      <form onSubmit={handleSubmit} className="space-y-6 mb-8">
+        {/* Content Input */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Your Content</label>
+          <textarea
+            value={formData.content}
+            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+            className="input-field w-full border border-surface-300 rounded-lg p-2"
+            rows={5}
+            placeholder="Enter your content to be translated..."
+          />
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Your Content
-              </label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
-                rows={6}
-                placeholder="Enter your content to be transformed into RedBook style..."
-                required
-              />
-            </div>
+        {/* Style Selection */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Content Category</label>
+          <div className="flex flex-wrap gap-2">
+            {styleOptions.map(option => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFormData(prev => ({ 
+                  ...prev, 
+                  style: option.toLowerCase() as StyleTranslatorRequest['style']
+                }))}
+                className={`px-3 py-1 rounded-full text-sm transition-all ${
+                  formData.style === option.toLowerCase()
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-surface-200 text-content-secondary hover:bg-surface-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">
-                  Content Category
-                </label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {/* Tone Selection */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Writing Tone</label>
+          <div className="flex flex-wrap gap-2">
+            {toneOptions.map(option => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFormData(prev => ({ 
+                  ...prev, 
+                  tone: option.toLowerCase() as StyleTranslatorRequest['tone']
+                }))}
+                className={`px-3 py-1 rounded-full text-sm transition-all ${
+                  formData.tone === option.toLowerCase()
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-surface-200 text-content-secondary hover:bg-surface-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
 
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">
-                  Writing Tone
-                </label>
-                <select
-                  value={tone}
-                  onChange={(e) => setTone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
-                >
-                  {tones.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full px-6 py-3 rounded-lg text-white font-medium bg-primary-500 hover:bg-primary-600 disabled:bg-primary-400 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+            <span className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Translating...
+            </span>
+          ) : (
+            'Translate Style'
+          )}
+        </button>
+      </form>
 
+      {error && (
+        <div className="bg-red-50 text-red-500 p-4 rounded-lg mb-8">
+          {error}
+        </div>
+      )}
+
+      {translation && (
+        <div className="space-y-6">
+          <div className="bg-surface-50 border border-surface-300 rounded-lg p-6 relative group">
+            {/* Title Copy Button */}
             <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 px-4 rounded-lg bg-rose-600 text-white font-medium hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              onClick={() => {
+                handleCopy(translation.title);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              className={`absolute top-4 right-16 p-1.5 rounded-full 
+                ${copied ? 'bg-green-500' : 'bg-surface-200'} text-content-secondary
+                opacity-0 group-hover:opacity-100 hover:bg-surface-300 
+                transition-all duration-200`}
+              title="Copy title"
             >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                  Transforming...
-                </span>
-              ) : (
-                'Transform Content'
-              )}
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
-          </form>
-        </div>
+            <div className="text-2xl font-bold mb-4">{translation.title}</div>
 
-        {/* Results Section */}
-        {result && (
-          <div className="bg-white rounded-xl shadow-lg p-8 space-y-6">
-            <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-rose-500" />
-              Transformed Content
-            </h3>
-            
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-500">Title</h4>
-                <div className="text-2xl font-bold text-gray-900">{result.title}</div>
-              </div>
+            {/* Content Copy Button */}
+            <button
+              onClick={() => {
+                handleCopy(translation.content);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              className={`absolute top-16 right-16 p-1.5 rounded-full 
+                ${copied ? 'bg-green-500' : 'bg-surface-200'} text-content-secondary
+                opacity-0 group-hover:opacity-100 hover:bg-surface-300 
+                transition-all duration-200`}
+              title="Copy content"
+            >
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            </button>
+            <div className="whitespace-pre-wrap mb-4">{translation.content}</div>
 
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-500">Content</h4>
-                <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-                  {result.content}
-                </div>
-              </div>
+            {/* Hashtags Copy Button */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {translation.hashtags.map((tag, index) => (
+                <span 
+                  key={index}
+                  className="px-2 py-1 bg-surface-200 text-content-secondary rounded-full text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+              <button
+                onClick={() => {
+                  handleCopy(translation.hashtags.join(' '));
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className={`p-1.5 rounded-full 
+                  ${copied ? 'bg-green-500' : 'bg-surface-200'} text-content-secondary
+                  opacity-0 group-hover:opacity-100 hover:bg-surface-300 
+                  transition-all duration-200`}
+                title="Copy hashtags"
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              </button>
+            </div>
 
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-500">Tags</h4>
-                <div className="flex flex-wrap gap-2">
-                  {result.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-sm"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-500">Optimization Tips</h4>
-                <div className="text-gray-600 bg-gray-50 rounded-lg p-4 text-sm leading-relaxed">
-                  {result.tips}
-                </div>
-              </div>
+            <div className="text-sm bg-surface-100 p-3 rounded">
+              <span className="font-medium">Cultural Notes:</span> {translation.notes}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
-}
+} 

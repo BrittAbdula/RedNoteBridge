@@ -11,7 +11,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }) {
-  const post = await getBlogPost(params.slug)
+  const { slug } = await params
+  const post = await getBlogPost(slug)
   if (!post) return { title: 'Not Found' }
 
   return {
@@ -31,7 +32,8 @@ export default async function Page({
 }: {
   params: { slug: string }
 }) {
-  const post = await getBlogPost(params.slug)
+    const { slug } = await params
+    const post = await getBlogPost(slug)
   if (!post) {
     notFound()
   }
@@ -51,7 +53,7 @@ export default async function Page({
 export function generateStaticParams() {
   return [
     { slug: 'RedNote-registration-guide' },
-    { slug: 'content-creation-masterclass' },
+    // { slug: 'content-creation-masterclass' },
     { slug: 'tools-guide' }
   ]
 }

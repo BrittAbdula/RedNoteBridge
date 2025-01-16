@@ -1,210 +1,207 @@
 'use client'
+
 import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import { generateNames } from '@/lib/api-client'
+import { GeneratedName, NameGeneratorRequest } from '@/types/name-generator'
+import { Copy, Check } from 'lucide-react'
+import { Slogan } from '@/components/Slogan'
 
-interface FormData {
-  gender: 'male' | 'female' | 'neutral'
-  style: 'modern' | 'traditional' | 'creative'
-  personality: string[]
-  interests: string
-}
+const personalityTraits = [
+  'Creative', 'Ambitious', 'Friendly', 'Elegant', 'Confident',
+  'Gentle', 'Wise', 'Energetic', 'Peaceful', 'Cheerful'
+]
 
-export default function NameGenerator() {
-  const [formData, setFormData] = useState<FormData>({
-    gender: 'neutral',
-    style: 'modern', 
-    personality: [],
-    interests: '',
-  })
+const genderOptions = ['Neutral', 'Male', 'Female']
+const styleOptions = ['Modern', 'Traditional', 'Creative']
+
+export function NameGenerator() {
   const [isLoading, setIsLoading] = useState(false)
-  const [results, setResults] = useState<Array<{
-    name: string
-    pinyin: string
-    meaning: string
-  }> | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [names, setNames] = useState<GeneratedName[]>([])
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+  const [formData, setFormData] = useState<NameGeneratorRequest>({
+    gender: 'neutral',
+    style: 'modern',
+    personality: [],
+    interests: ''
+  })
 
-  const personalityTraits = [
-    'Elegant', 'Lively', 'Steady', 'Creative',
-    'Gentle', 'Strong', 'Wise', 'Humorous'
-  ]
-
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    
+    setError(null)
+
     try {
-      const response = await fetch('/api/generate-name', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      
-      const data = await response.json()
-      setResults(data.names)
-    } catch (error) {
-      console.error('Error generating names:', error)
+      const response = await generateNames(formData)
+      setNames(response.names)
+    } catch (err) {
+      console.error('Error generating names:', err)
+      setError('Failed to generate names. Please try again.')
     } finally {
       setIsLoading(false)
     }
   }
 
+  const handleCopy = async (name: GeneratedName, index: number) => {
+    try {
+      const textToCopy = `${name.name} (${name.pinyin})\n${name.meaning}`
+      await navigator.clipboard.writeText(textToCopy)
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 space-y-10">
-      {/* Header Section */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">Chinese Name Generator</h1>
-        <p className="text-lg text-gray-600">
-          Create a perfect Chinese name that resonates with your identity and RedNote presence.
-        </p>
-      </div>
-
-      {/* Tool Section */}
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Gender Selection */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Gender Preference
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { value: 'male', label: 'Masculine' },
-                { value: 'female', label: 'Feminine' },
-                { value: 'neutral', label: 'Neutral' }
-              ].map((gender) => (
-                <button
-                  key={gender.value}
-                  type="button"
-                  onClick={() => setFormData({
-                    ...formData,
-                    gender: gender.value as FormData['gender']
-                  })}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                    ${formData.gender === gender.value 
-                      ? 'bg-rose-100 text-rose-700 border-2 border-rose-500'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  {gender.label}
-                </button>
-              ))}
-            </div>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-2">Chinese Name Generator</h1>
+      <Slogan type="name-generator" />
+      
+      <form onSubmit={handleSubmit} className="space-y-6 mb-8">
+        {/* Gender Selection */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Gender Preference</label>
+          <div className="flex flex-wrap gap-2">
+            {genderOptions.map(option => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFormData(prev => ({ 
+                  ...prev, 
+                  gender: option.toLowerCase() as 'male' | 'female' | 'neutral' 
+                }))}
+                className={`px-3 py-1 rounded-full text-sm transition-all ${
+                  formData.gender === option.toLowerCase()
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-surface-200 text-content-secondary hover:bg-surface-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Style Selection */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Name Style
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { value: 'modern', label: 'Modern' },
-                { value: 'traditional', label: 'Traditional' },
-                { value: 'creative', label: 'Creative' }
-              ].map((style) => (
-                <button
-                  key={style.value}
-                  type="button"
-                  onClick={() => setFormData({
-                    ...formData,
-                    style: style.value as FormData['style']
-                  })}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                    ${formData.style === style.value 
-                      ? 'bg-rose-100 text-rose-700 border-2 border-rose-500'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  {style.label}
-                </button>
-              ))}
-            </div>
+        {/* Style Selection */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Name Style</label>
+          <div className="flex flex-wrap gap-2">
+            {styleOptions.map(option => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFormData(prev => ({ 
+                  ...prev, 
+                  style: option.toLowerCase() as 'modern' | 'traditional' | 'creative' 
+                }))}
+                className={`px-3 py-1 rounded-full text-sm transition-all ${
+                  formData.style === option.toLowerCase()
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-surface-200 text-content-secondary hover:bg-surface-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Personality Traits */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Personality Traits (Choose up to 3)
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {personalityTraits.map((trait) => (
-                <button
-                  key={trait}
-                  type="button"
-                  onClick={() => {
-                    const isSelected = formData.personality.includes(trait)
-                    const newTraits = isSelected
-                      ? formData.personality.filter(t => t !== trait)
-                      : [...formData.personality, trait].slice(0, 3)
-                    setFormData({ ...formData, personality: newTraits })
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                    ${formData.personality.includes(trait)
-                      ? 'bg-rose-100 text-rose-700 border-2 border-rose-500'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  {trait}
-                </button>
-              ))}
-            </div>
+        {/* Personality Traits */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Personality Traits (select up to 3)</label>
+          <div className="flex flex-wrap gap-2">
+            {personalityTraits.map(trait => (
+              <button
+                key={trait}
+                type="button"
+                onClick={() => {
+                  setFormData(prev => ({
+                    ...prev,
+                    personality: prev.personality.includes(trait)
+                      ? prev.personality.filter(t => t !== trait)
+                      : prev.personality.length < 3
+                      ? [...prev.personality, trait]
+                      : prev.personality
+                  }))
+                }}
+                className={`px-3 py-1 rounded-full text-sm transition-all ${
+                  formData.personality.includes(trait)
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-surface-200 text-content-secondary hover:bg-surface-300'
+                }`}
+              >
+                {trait}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Interests/Additional Info */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Interests & Additional Information
-            </label>
-            <textarea
-              value={formData.interests}
-              onChange={(e) => setFormData({
-                ...formData,
-                interests: e.target.value
-              })}
-              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500"
-              rows={4}
-              placeholder="Share your interests, hobbies, or specific meanings you'd like your name to reflect..."
-            />
-          </div>
+        {/* Interests/Additional Info */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Interests or Additional Information</label>
+          <textarea
+            value={formData.interests}
+            onChange={(e) => setFormData(prev => ({ ...prev, interests: e.target.value }))}
+            className="input-field w-full border border-surface-300 rounded-lg p-2"
+            rows={3}
+            placeholder="E.g., content creator, food blogger, travel enthusiast..."
+          />
+        </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-3 px-4 rounded-lg bg-rose-600 text-white font-medium hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                Generating...
-              </span>
-            ) : (
-              'Generate Names'
-            )}
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full px-6 py-3 rounded-lg text-white font-medium bg-primary-500 hover:bg-primary-600 disabled:bg-primary-400 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+            <span className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Generating...
+            </span>
+          ) : (
+            'Generate Names'
+          )}
+        </button>
+      </form>
 
-      {/* Results Section */}
-      {results && (
+      {error && (
+        <div className="bg-red-50 text-red-500 p-4 rounded-lg mb-8">
+          {error}
+        </div>
+      )}
+
+      {names.length > 0 && (
         <div className="space-y-6">
-          {results.map((result, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-lg p-6 space-y-4"
-            >
-              <div className="text-3xl font-bold text-rose-600">
-                {result.name}
+          <h2 className="text-2xl font-bold">Generated Names</h2>
+          <div className="grid gap-4">
+            {names.map((name, index) => (
+              <div key={index} className="bg-surface-50 border border-surface-300 rounded-lg p-6 relative group">
+                <button
+                  onClick={() => handleCopy(name, index)}
+                  className="absolute top-4 right-4 p-1.5 rounded-full 
+                    bg-surface-200 text-content-secondary
+                    opacity-0 group-hover:opacity-100 hover:bg-surface-300 
+                    transition-all duration-200"
+                  title="Copy name details"
+                >
+                  {copiedIndex === index ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </button>
+                <div className="text-2xl font-bold mb-2">{name.name}</div>
+                <div className="text-content-secondary mb-2">{name.pinyin}</div>
+                <div className="text-content-tertiary">{name.meaning}</div>
               </div>
-              <div className="text-gray-700">
-                <span className="font-semibold">Pinyin:</span> {result.pinyin}
-              </div>
-              <div className="text-gray-600 leading-relaxed">
-                {result.meaning}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>
   )
-}
+} 
