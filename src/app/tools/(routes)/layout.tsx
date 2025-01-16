@@ -5,18 +5,6 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'RedNote Tools - RedNoteBridge',
   description: 'Free tools to help you succeed on RedNote. Name generator, translator, and more tools designed for RedNote creators.',
-  keywords: [
-    'RedNote tools',
-    'RedNote name generator',
-    'RedNote name translator',
-    'RedNote username',
-    'Chinese name generator',
-    'Chinese social media tools',
-    'RedNote creator tools',
-    'RedNote profile optimization',
-    'RedNote account setup',
-    'Chinese social media assistant'
-  ],
   openGraph: {
     title: 'RedNote Tools - RedNoteBridge',
     description: 'Free tools to help you succeed on RedNote. Name generator, translator, and more tools designed for RedNote creators.',
